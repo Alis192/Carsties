@@ -2,6 +2,7 @@ using AuctionService.Data;
 using AuctionService.DTOs;
 using AuctionService.Entities;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,16 +21,26 @@ public class AuctionsController : ControllerBase
         _mapper = mapper;
     }
 
-    [HttpGet]
-    public async Task<ActionResult<List<AuctionDto>>> GetAllAuctions()
-    {
-        var auctions = await _context.Auctions
-            .Include(x => x.Item)
-            .OrderBy(x => x.Item.Make)
-            .ToListAsync();
 
-        // Map to list of 'AuctionDto', get that from 'auctions'
-        return _mapper.Map<List<AuctionDto>>(auctions);
+    /// <summary>
+    /// This method retrieves all auctions from the database that were updated after a specified date, orders them by the make of the item, maps them to a list of AuctionDto objects, and returns the list. If no date is specified, it retrieves all auctions.
+    /// </summary>
+    /// <param name="date"></param>
+    /// <returns></returns>
+    [HttpGet]
+    public async Task<ActionResult<List<AuctionDto>>> GetAllAuctions(string date)
+    {
+
+        var query = _context.Auctions.OrderBy(x => x.Item.Make).AsQueryable();    
+
+        if(!string.IsNullOrEmpty(date))
+        {
+            //Will be true only when UpdatedAt is later than the input date. This means the auction was updated after the provided date.
+            query = query.Where(x => x.UpdatedAt.CompareTo(DateTime.Parse(date).ToUniversalTime()) > 0);
+        }
+
+
+        return await query.ProjectTo<AuctionDto>(_mapper.ConfigurationProvider).ToListAsync();
     }
 
     [HttpGet("{id}")]
@@ -76,15 +87,24 @@ public class AuctionsController : ControllerBase
         auction.Item.Color = updateAuctionDto.Color ?? auction.Item.Color;
         auction.Item.Mileage = updateAuctionDto.Mileage ?? auction.Item.Mileage;
         auction.Item.Year = updateAuctionDto.Year ?? auction.Item.Year;
+        auction.AuctionEnd = DateTime.UtcNow.AddYears(1); 
 
         var result = await _context.SaveChangesAsync() > 0;
 
         if (result) return Ok();
 
         return BadRequest("Problem saving");
-    }
+    }   
 
-    [HttpDelete("{id}")]
+
+    
+    // [HttpPut]
+    // public async Task<ActionResult> UpdateAuctionDate() 
+    // {
+
+    // }
+
+    [HttpDelete("{id}")]    
     public async Task<ActionResult> DeleteAuction(Guid id)
     {
         var auction = await _context.Auctions.FindAsync(id);
