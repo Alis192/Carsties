@@ -9,7 +9,7 @@ public class DbInitializer
     {
         //Initializes a MongoDB database named SearchDb using a connection string obtained from the application’s configuration.
         await DB.InitAsync("SearchDb", MongoClientSettings.FromConnectionString(app.Configuration.GetConnectionString("MongoDbConnection")));
-
+        
         await DB.Index<Item>()
             .Key(x => x.Make, KeyType.Text)
             .Key(x => x.Model, KeyType.Text)
