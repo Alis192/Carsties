@@ -1,3 +1,4 @@
+using AuctionService;
 using AuctionService.Data;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,22 @@ builder.Services.AddDbContext<AuctionDbContext>(opt => {
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddMassTransit( x => {
+
+    x.AddEntityFrameworkOutbox<AuctionDbContext>(o => 
+    {
+        //If the service bus is available, the message will be delivered immediately.
+        //Else then every 10s because of this configuration, it's going to attempt to look inside the
+        //outbox and see if there's anything that hasn't been delivered yet.
+        o.QueryDelay = TimeSpan.FromSeconds(10);
+
+        o.UsePostgres();
+        o.UseBusOutbox();
+    });
+
+    x.AddConsumersFromNamespaceContaining<AuctionCreatedFaultConsumer>();
+
+    x.SetEndpointNameFormatter(new KebabCaseEndpointNameFormatter("auction", false));
+
     x.UsingRabbitMq((context, cfg) => {
         cfg.ConfigureEndpoints(context);
     });

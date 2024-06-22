@@ -24,6 +24,14 @@ builder.Services.AddMassTransit( x => {
    // Configures RabbitMQ as the transport protocol for MassTransit. 
    // The cfg.ConfigureEndpoints(context) method automatically configures endpoints for the registered consumers.
     x.UsingRabbitMq((context, cfg) => {
+
+        cfg.ReceiveEndpoint("search-auction-created", e => 
+        {
+            e.UseMessageRetry(r => r.Interval(5,5));
+
+            e.ConfigureConsumer<AuctionCreatedConsumer>(context);
+        });
+
         cfg.ConfigureEndpoints(context);
     });
 });
