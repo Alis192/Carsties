@@ -70,8 +70,11 @@ public class AuctionsController : ControllerBase
         //EF tracks it in the memory
         _context.Auctions.Add(auction);
 
+        // Maps from Auction to AuctionDto
         var newAuction = _mapper.Map<AuctionDto>(auction);
 
+
+        //Mapping AuctionDto instance to AuctionCreated and publishing it to message bus
         await _publishEndpoint.Publish(_mapper.Map<AuctionCreated>(newAuction));
 
         var result = await _context.SaveChangesAsync() > 0;
@@ -96,6 +99,9 @@ public class AuctionsController : ControllerBase
         auction.Item.Mileage = updateAuctionDto.Mileage ?? auction.Item.Mileage;
         auction.Item.Year = updateAuctionDto.Year ?? auction.Item.Year;
         auction.AuctionEnd = DateTime.UtcNow.AddYears(1); 
+
+        //TO DO: Map from Auction to UpdateAuction
+        await _publishEndpoint.Publish(_mapper.Map<AuctionUpdated>(auction));
 
         var result = await _context.SaveChangesAsync() > 0;
 
@@ -122,6 +128,8 @@ public class AuctionsController : ControllerBase
         // TODO: check seller == username
 
         _context.Auctions.Remove(auction);
+
+        await _publishEndpoint.Publish<AuctionDeleted>(new {Id = auction.Id.ToString()});
 
         var result = await _context.SaveChangesAsync() > 0;
 
