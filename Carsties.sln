@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contracts", "src\Contracts\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityService", "src\IdentityService\IdentityService.csproj", "{46F4BC2E-583F-4FEF-B06F-C4727A67C9D2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GatewayService", "src\GatewayService\GatewayService.csproj", "{1348DE5C-DD8D-47C9-A8B8-5BC4169829D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{46F4BC2E-583F-4FEF-B06F-C4727A67C9D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{46F4BC2E-583F-4FEF-B06F-C4727A67C9D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{46F4BC2E-583F-4FEF-B06F-C4727A67C9D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1348DE5C-DD8D-47C9-A8B8-5BC4169829D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1348DE5C-DD8D-47C9-A8B8-5BC4169829D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1348DE5C-DD8D-47C9-A8B8-5BC4169829D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1348DE5C-DD8D-47C9-A8B8-5BC4169829D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -44,5 +50,6 @@ Global
 		{27ABAA77-CC1C-4116-9F6F-E6428A649B27} = {618CD89D-08BD-47C2-90F5-44DA668D6A2B}
 		{470FC07B-E68F-4623-AD56-D65CA23DF292} = {618CD89D-08BD-47C2-90F5-44DA668D6A2B}
 		{46F4BC2E-583F-4FEF-B06F-C4727A67C9D2} = {618CD89D-08BD-47C2-90F5-44DA668D6A2B}
+		{1348DE5C-DD8D-47C9-A8B8-5BC4169829D4} = {618CD89D-08BD-47C2-90F5-44DA668D6A2B}
 	EndGlobalSection
 EndGlobal
