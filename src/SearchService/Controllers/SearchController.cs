@@ -31,7 +31,8 @@ public class SearchController : ControllerBase
         query = searchParams.OrderBy switch 
         {
             // If 'OrderBy' is "make", sort by the 'Make' property in ascending order.
-            "make" => query.Sort(x => x.Ascending(a => a.Make)),
+            "make" => query.Sort(x => x.Ascending(a => a.Make))
+                .Sort(x => x.Ascending(a => a.Model)),
             // If 'OrderBy' is "new", sort by the 'CreatedAt' property in descending order to show newest items first.
             "new" => query.Sort(x => x.Descending(a => a.CreatedAt)),
             // If 'OrderBy' is neither "make" nor "new", sort by the 'AuctionEnd' property in ascending order by default.
