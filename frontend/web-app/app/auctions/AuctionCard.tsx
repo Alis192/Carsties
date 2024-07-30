@@ -2,6 +2,7 @@ import React from 'react'
 import Image from 'next/image'
 import CountdownTimer from './CountdownTimer'
 import CarImage from './CarImage'
+import Link from 'next/link'
 
 
 type Props = {
@@ -10,7 +11,7 @@ type Props = {
 
 export default function AuctionCard({ auction }: Props) {
     return (
-      <a href="#" className='group'>
+      <Link href={`/auctions/details/${auction.id}`} className='group'>
         <div className='w-full bg-gray-200 aspect-w-16 aspect-h-10 rounded-lg overflow-hidden'>
             <div>
                 <CarImage imageUrl={auction.imageUrl}/>
@@ -23,7 +24,7 @@ export default function AuctionCard({ auction }: Props) {
             <h3 className='text-gray-700'>{auction.make} {auction.model}</h3>
             <p className='font-semibold text-sm'>{/* Some content here */}</p>
           </div>
-      </a>
+      </Link>
     )
   }
   
