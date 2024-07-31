@@ -21,7 +21,7 @@ export async function  updateAuctionTest() {
 }
 
 export async function createAuction(data: FieldValues) {
-    return await fetchWrapper.post('auctions', data);
+    return await fetchWrapper.post('auctions', data);   
 }
 
 export async function getTokenWorkaround() {
@@ -35,4 +35,8 @@ export async function getTokenWorkaround() {
     } as NextApiRequest
 
     return await getToken({req})
+}
+
+export async function getDetailedViewData(id: string) : Promise<Auction> {
+    return await fetchWrapper.get(`auctions/${id}`);
 }
