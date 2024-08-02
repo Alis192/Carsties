@@ -4,6 +4,7 @@ using MassTransit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Entities;
+using Namespace;
 
 namespace BiddingService;
 
@@ -13,11 +14,15 @@ public class BidsController : ControllerBase
 {
     private readonly IMapper _mapper;
     private readonly IPublishEndpoint _publishEndpoint;
+    private readonly GrpcAuctionClient _grpcClient;
 
-    public BidsController(IMapper mapper, IPublishEndpoint publishEndpoint)
+
+    public BidsController(IMapper mapper, IPublishEndpoint publishEndpoint, GrpcAuctionClient grpcClient)
     {
         _mapper = mapper;
         _publishEndpoint = publishEndpoint;
+        _grpcClient = grpcClient;
+
     }
 
 
@@ -28,8 +33,14 @@ public class BidsController : ControllerBase
         var auction = await DB.Find<Auction>().OneAsync(auctionId);
 
         if (auction == null) {
-            // TODO: check with auction service if that has an auction
-            return NotFound();
+            
+            auction = _grpcClient.GetAuction(auctionId);
+
+            if (auction == null) 
+            {
+                return BadRequest("Cannot accept bids on this auction at this time");
+            }
+            // return NotFound();
         }
 
         if (auction.Seller == User.Identity.Name) {
