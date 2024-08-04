@@ -3,10 +3,12 @@ import Image from 'next/image'
 import CountdownTimer from './CountdownTimer'
 import CarImage from './CarImage'
 import Link from 'next/link'
+import CurrentBid from './CurrentBid'
+import { Auction } from '@/types'
 
 
 type Props = {
-    auction: any
+    auction: Auction
 }
 
 export default function AuctionCard({ auction }: Props) {
@@ -18,11 +20,14 @@ export default function AuctionCard({ auction }: Props) {
                 <div className='absolute bottom-2 left-2'>
                     <CountdownTimer auctionEnd={auction.auctionEnd}/>
                 </div>
+                <div className='absolute top-2 right-2'>
+                    <CurrentBid reservePrice={auction.reservePrice} amount={auction.currentHighBid}/>
+                </div>
             </div>
           </div>
           <div className='flex justify-between items-center mt-4'>
             <h3 className='text-gray-700'>{auction.make} {auction.model}</h3>
-            <p className='font-semibold text-sm'>{/* Some content here */}</p>
+            <p className='font-semibold text-sm'>{auction.year}</p>
           </div>
       </Link>
     )
