@@ -37,6 +37,7 @@ export default function SignalRProvider({ children, user }: Props) {
                     console.log('Connected to notification hub');
 
                     connection.on('BidPlaced', (bid: Bid) => {
+                        console.log(bid)
                         if (bid.bidStatus.includes('Accepted')) {
                             setCurrentPrice(bid.auctionId, bid.amount);
                         }
@@ -52,6 +53,7 @@ export default function SignalRProvider({ children, user }: Props) {
                     });
 
                     connection.on('AuctionFinished', (finishedAuction: AuctionFinished) => {
+                        console.log("Auction finished");
                         const auction = getDetailedViewData(finishedAuction.auctionId);
                         return toast.promise(auction, {
                             loading: 'Loading',

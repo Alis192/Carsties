@@ -24,7 +24,7 @@ export const useBidStore = createWithEqualityFn<State & Actions>((set) => ({
 
     addBid: (bid: Bid) => {
         set((state) => ({
-            bids: !state.bids.find(x => x.id ===bid.id) ? [bid, ...state.bids] : [...state.bids]
+            bids: !state.bids.find(x => x.id === bid.id) ? [bid, ...state.bids] : [...state.bids]
         }))
     },
 

@@ -17,6 +17,6 @@ public class BidPlacedConsumer : IConsumer<BidPlaced> {
     {
         System.Console.WriteLine("--> bid placed message received");
 
-        await _hubContext.Clients.All.SendAsync("BidPlaced ", context.Message);
+        await _hubContext.Clients.All.SendAsync("BidPlaced", context.Message);
     }
 }
