@@ -80,15 +80,13 @@ export default function BidList({ user, auction }: Props) {
                     </div>
                 ) : user && user.username === auction.seller ? (
                     <div className='flex items-center justify-center p-2 text-lg font-semibold'>
-                        You can't bid on your own auction
+                        You cannot bid on your own auction
                     </div>
                 ) : (
                     <BidForm auctionId={auction.id} highBid={highBid} />
                 )}
 
             </div>
-
-            {/* <Heading title='Bids' /> */}
 
         </div >
     )

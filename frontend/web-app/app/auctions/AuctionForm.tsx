@@ -73,7 +73,7 @@ export default function AuctionForm( { auction }: Props) {
 
         <div className='grid grid-cols-2 gap-3'>
           <Input label='Reserve Price (enter 0 if no reserve' name='reservePrice' control={control} type='number' rules={{ required: 'Reserve price  is required' }} />
-          <DateInput label='Auction end date/time' name='auctionEnd' control={control} dateFormat='dd MMMM yyyy h:mm a' showTimeSelect rules={{ required: 'Auction end date is required' }} />
+          <DateInput label='Auction end date/time' name='auctionEnd' control={control} rules={{ required: 'Auction end date is required' }} />
         </div>
       </>}
 
