@@ -31,7 +31,7 @@ export default function AuctionForm( { auction }: Props) {
     }
 
     setFocus('')
-  }, [setFocus])
+  }, [setFocus, reset, auction])
 
   async function onSubmit(data: FieldValues) {
     try {
