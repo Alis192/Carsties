@@ -1,6 +1,9 @@
 import { NextAuthOptions } from 'next-auth';
 import DuendeIdentityServer6 from 'next-auth/providers/duende-identity-server6';
  
+console.log('Client Secret:', process.env.CLIENT_SECRET); // Add this line
+
+
 export const authOptions: NextAuthOptions = {
     session: {
         strategy: 'jwt'
