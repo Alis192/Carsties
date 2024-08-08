@@ -1,7 +1,7 @@
 import { NextAuthOptions } from 'next-auth';
 import DuendeIdentityServer6 from 'next-auth/providers/duende-identity-server6';
  
-console.log('Client Secret:', process.env.CLIENT_SECRET); // Add this line
+console.log('Client Secret:', process.env.CLIENT_SECRET); // To check client secret
 
 
 export const authOptions: NextAuthOptions = {
