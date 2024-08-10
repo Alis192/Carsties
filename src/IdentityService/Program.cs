@@ -1,4 +1,6 @@
 ﻿using IdentityService;
+using Npgsql;
+using Polly;
 using Serilog;
 
 Log.Logger = new LoggerConfiguration()
@@ -7,8 +9,7 @@ Log.Logger = new LoggerConfiguration()
 
 Log.Information("Starting up");
 
-try
-{
+try {
     var builder = WebApplication.CreateBuilder(args);
 
     builder.Host.UseSerilog((ctx, lc) => lc
@@ -20,9 +21,15 @@ try
         .ConfigureServices()
         .ConfigurePipeline();
 
+
+
     // this seeding is only for the template to bootstrap the DB and users.
     // in production you will likely want a different approach.
-    SeedData.EnsureSeedData(app);
+    var retryPolicy = Policy
+    .Handle<NpgsqlException>()
+    .WaitAndRetry(5, retryAttempt => TimeSpan.FromSeconds(10));
+
+    retryPolicy.ExecuteAndCapture(() => SeedData.EnsureSeedData(app));
 
     app.Run();
 }
@@ -32,12 +39,10 @@ catch (Exception ex) when (
                             // HostAbortedException was added in .NET 7, but since we target .NET 6 we
                             // need to do it this way until we target .NET 8
                             && ex.GetType().Name is not "HostAbortedException"
-                        )
-{
+                        ) {
     Log.Fatal(ex, "Unhandled exception");
 }
-finally
-{
+finally {
     Log.Information("Shut down complete");
     Log.CloseAndFlush();
 }
