@@ -151,7 +151,7 @@ services:
       - NEXTAUTH_URL=http://app.autoauctioneer.com
       - NEXTAUTH_URL_INTERNAL=http://web-app:3000
       - API_URL=http://gateway-svc/
-      - ID_URL=http://id.autoauctioneer.com
+      - c
       - NEXT_PUBLIC_NOTIFY_URL=http://gateway-svc/notifications
       - VIRTUAL_HOST=app.autoauctioneer.com
       - VIRTUAL_PORT=3000

@@ -1,4 +1,5 @@
 using Duende.IdentityServer;
+using Duende.IdentityServer.Services;
 using IdentityService.Data;
 using IdentityService.Models;
 using Microsoft.AspNetCore.Identity;
@@ -7,8 +8,7 @@ using Serilog;
 
 namespace IdentityService;
 
-internal static class HostingExtensions
-{
+internal static class HostingExtensions {
     public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
     {
         builder.Services.AddRazorPages();
@@ -21,15 +21,13 @@ internal static class HostingExtensions
             .AddDefaultTokenProviders();
 
         builder.Services
-            .AddIdentityServer(options =>
-            {
+            .AddIdentityServer(options => {
                 options.Events.RaiseErrorEvents = true;
                 options.Events.RaiseInformationEvents = true;
                 options.Events.RaiseFailureEvents = true;
                 options.Events.RaiseSuccessEvents = true;
 
-                if (builder.Environment.IsEnvironment("Docker"))
-                {
+                if (builder.Environment.IsEnvironment("Docker")) {
                     options.IssuerUri = "identity-svc";
                 }
 
@@ -40,8 +38,8 @@ internal static class HostingExtensions
             .AddInMemoryApiScopes(Config.ApiScopes)
             .AddInMemoryClients(Config.Clients(builder.Configuration))
             .AddAspNetIdentity<ApplicationUser>()
-            .AddProfileService<CustomProfileService>();   
-        
+            .AddProfileService<CustomProfileService>();
+
         builder.Services.ConfigureApplicationCookie(options => {
             options.Cookie.SameSite = SameSiteMode.Lax;
         });
@@ -51,21 +49,29 @@ internal static class HostingExtensions
 
         return builder.Build();
     }
-    
+
     public static WebApplication ConfigurePipeline(this WebApplication app)
-    { 
+    {
         app.UseSerilogRequestLogging();
-    
-        if (app.Environment.IsDevelopment())
-        {
+
+        if (app.Environment.IsDevelopment()) {
             app.UseDeveloperExceptionPage();
         }
 
         app.UseStaticFiles();
         app.UseRouting();
+
+        if (app.Environment.IsProduction()) {
+            app.Use(async (ctx, next) => {
+                var serverUrls = ctx.RequestServices.GetRequiredService<IServerUrls>();
+                serverUrls.Origin = serverUrls.Origin = "https://id.autoauctioneer.online";
+                await next();
+            });
+        }
+
         app.UseIdentityServer();
         app.UseAuthorization();
-        
+
         app.MapRazorPages()
             .RequireAuthorization();
 
