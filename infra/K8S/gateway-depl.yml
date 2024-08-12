@@ -17,7 +17,9 @@ spec:
         imagePullPolicy: Never
         env: 
           - name: ClientApp
-            value: http://app.autoauctioneer.com
+            value: https://app.autoauctioneer.com
+          - name: IdentityServiceUrl
+            value: https://id.autoauctioneer.online
 ---
 apiVersion: v1
 kind: Service

@@ -99,7 +99,7 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Docker
       - ASPNETCORE_URLS=http://+:80
-      - ClientApp=http://app.autoauctioneer.com
+      - ClientApp=https://app.autoauctioneer.com
       - VIRTUAL_HOST=api.autoauctioneer.com
     networks:
       custom:
@@ -121,7 +121,7 @@ services:
       - mongodb
       - rabbitmq
     networks:
-      - custom
+      custom:
   notify-svc:
     image: alis192/notify-svc:latest
     build:
@@ -151,7 +151,7 @@ services:
       - NEXTAUTH_URL=http://app.autoauctioneer.com
       - NEXTAUTH_URL_INTERNAL=http://web-app:3000
       - API_URL=http://gateway-svc/
-      - c
+      - ID_URL=http://id.autoauctioneer.com
       - NEXT_PUBLIC_NOTIFY_URL=http://gateway-svc/notifications
       - VIRTUAL_HOST=app.autoauctioneer.com
       - VIRTUAL_PORT=3000
