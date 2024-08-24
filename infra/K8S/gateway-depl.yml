@@ -17,7 +17,7 @@ spec:
         imagePullPolicy: Always 
         env: 
           - name: ClientApp
-            value: https://app.autoauctioneer.com
+            value: https://app.autoauctioneer.live
           - name: IdentityServiceUrl
             value: https://id.autoauctioneer.online
 ---
