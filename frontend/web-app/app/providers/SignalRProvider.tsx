@@ -21,7 +21,7 @@ export default function SignalRProvider({ children, user }: Props) {
     const setCurrentPrice = useAuctionStore(state => state.setCurrentPrice);
     const addBid = useBidStore(state => state.addBid);
     const apiUrl = process.env.NODE_ENV === 'production' ? 
-        'http://api.autoauctioneer.com/notifications'
+        'https://api.autoauctioneer.com/notifications'
         : process.env.NEXT_PUBLIC_NOTIFY_URL
 
     useEffect(() => {

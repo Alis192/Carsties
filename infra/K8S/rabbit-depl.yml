@@ -11,14 +11,20 @@ spec:
       labels:
         app: rabbitmq
     spec:
-      containers:
+      containers: 
       - name: rabbitmq
         image: rabbitmq:3-management
         env: 
           - name: RABBITMQ_DEFAULT_USER
-            value: rabbit
+            valueFrom: 
+              secretKeyRef: 
+                name: rabbit-secret
+                key: username
           - name: RABBITMQ_DEFAULT_PASS
-            value: rabbit
+            valueFrom: 
+              secretKeyRef: 
+                name: rabbit-secret
+                key: password
         ports:
         - containerPort: 15672
           name: rbmq-mgmt-port
@@ -44,16 +50,4 @@ spec:
   - port: 5672
     targetPort: 5672
 
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: rabbit-lb
-spec:
-  type: LoadBalancer
-  selector:
-    app: rabbitmq
-  ports:
-  - port: 15672
-    targetPort: 15672
 

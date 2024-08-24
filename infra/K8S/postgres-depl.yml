@@ -16,7 +16,10 @@ spec:
         image: postgres
         env: 
           - name: POSTGRES_PASSWORD
-            value: postgrespw
+            valueFrom: 
+              secretKeyRef: 
+                name: postgres-secret
+                key: password
         ports:
         - containerPort: 5432
         volumeMounts:
@@ -33,19 +36,6 @@ metadata:
   name: postgres-clusterip
 spec:
   type: ClusterIP
-  selector:
-    app: postgres
-  ports:
-  - port: 5432
-    targetPort: 5432
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: postgres-lb
-spec:
-  type: LoadBalancer
   selector:
     app: postgres
   ports:
