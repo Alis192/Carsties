@@ -6,13 +6,8 @@ metadata:
     name: ingress-svc
 spec:
   ingressClassName: nginx
-  tls: 
-    - hosts: 
-      - app.autoauctioneer.com
-      - api.autoauctioneer.com
-      secretName: autoauctioneer-app-tls
   rules:
-  - host: app.autoauctioneer.com
+  - host: app.autoauctioneer.live
     http:
       paths:
       - pathType: Prefix
@@ -22,7 +17,7 @@ spec:
             name: webapp-clusterip
             port: 
               number: 3000
-  - host: api.autoauctioneer.com
+  - host: api.autoauctioneer.live
     http:
       paths:
       - pathType: Prefix
