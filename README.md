@@ -1,1 +1,1 @@
-A car bidding platform - app.autoauctioneer.com
+A car bidding platform - [app.autoauctioneer.com]
